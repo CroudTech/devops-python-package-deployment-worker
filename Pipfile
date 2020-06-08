@@ -10,6 +10,7 @@ setuptools = "*"
 click = "*"
 croudtech-helm-helper = {path = ".",editable = true}
 boto3 = "*"
+ruamel-yaml = "*"
 
 [requires]
 python_version = "3.8"

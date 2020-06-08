@@ -3,6 +3,8 @@ import click
 import os
 from .git_values import GitValues
 from pathlib import Path
+import ruamel.yaml
+yaml = ruamel.yaml.YAML()
 
 @click.command()
 @click.option('--namespace', default="default", help='The namespace for the release')
@@ -11,7 +13,7 @@ from pathlib import Path
 @click.option('--extrafiles', help='Extra file names to search for')
 @click.option('--extravalues', help='Full paths to extra values files')
 @click.option('--destination', default="/tmp", help='The destination for downloaded values files')
-@click.option('--output', required="true", default='json', help='The source s3 bucket name', type=click.Choice(['json', 'helm']))
+@click.option('--output', required="true", default='json', help='The source s3 bucket name', type=click.Choice(['json', 'helm', 'combined']))
 @click.option('--region', default="eu-west-2", help='The target region')
 @click.option('--envname', default="development", help='The target environment')
 @click.option('--colour', default="blue", help='The target colour')
@@ -41,6 +43,17 @@ def main(namespace, chart, app, extrafiles, extravalues, destination, output, re
     downloaded = bp.download_values(destination)
     if output == 'json':
         print(json.dumps(downloaded))
+    elif output == 'combined':
+        combined = {}
+        for file in downloaded:
+            with open(file) as fp:
+                data = yaml.load(fp)
+                combined.update(data)
+        filename = destination + '/combined-%s-%s.yaml' % (namespace, app)
+        fout = open(filename, 'w+')
+        yaml.dump(combined, fout)
+        fout.close()
+        print(filename)
     elif output == 'helm':
         helm_args = ''
         for file in downloaded:
