@@ -14,6 +14,8 @@ setup(
         "docutils==0.15.2",
         "jmespath==0.10.0",
         "python-dateutil==2.8.1",
+        "ruamel-yaml==0.16.10",
+        "ruamel.yaml.clib==0.2.0; platform_python_implementation == 'CPython' and python_version < '3.9'",
         "s3transfer==0.3.3",
         "six==1.15.0",
         "urllib3==1.25.9; python_version != '3.4'",
