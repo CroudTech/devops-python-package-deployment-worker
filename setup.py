@@ -8,8 +8,8 @@ print(find_packages())
 
 setup(
     install_requires=[
-        "boto3==1.13.24",
-        "botocore==1.16.24",
+        "boto3==1.13.25",
+        "botocore==1.16.25",
         "click==7.1.2",
         "docutils==0.15.2",
         "jmespath==0.10.0",

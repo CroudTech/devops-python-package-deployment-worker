@@ -6,10 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-setuptools = "*"
-click = "*"
-croudtech-helm-helper = {path = ".",editable = true}
 boto3 = "*"
+click = "*"
+setuptools = "*"
 ruamel-yaml = "*"
 
 [requires]
