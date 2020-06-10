@@ -5,6 +5,18 @@ from .git_values import GitValues
 from pathlib import Path
 import ruamel.yaml
 yaml = ruamel.yaml.YAML()
+import collections
+
+def dict_merge(a, b, path=None):
+    "merges b into a"
+    if path is None: path = []
+    for key in b:
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(b[key], dict):
+                dict_merge(a[key], b[key], path + [str(key)])
+        else:
+            a[key] = b[key]
+    return a
 
 @click.command()
 @click.option('--namespace', default="default", help='The namespace for the release')
@@ -48,7 +60,7 @@ def main(namespace, chart, app, extrafiles, extravalues, destination, output, re
         for file in downloaded:
             with open(file) as fp:
                 data = yaml.load(fp)
-                combined.update(data)
+                combined = dict_merge(combined, data)
         filename = destination + '/combined-%s-%s.yaml' % (namespace, app)
         fout = open(filename, 'w+')
         yaml.dump(combined, fout)
