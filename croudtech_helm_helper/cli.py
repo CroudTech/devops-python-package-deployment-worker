@@ -18,7 +18,18 @@ def dict_merge(a, b, path=None):
             a[key] = b[key]
     return a
 
-@click.command()
+@click.group()
+@click.option('--debug/--no-debug', default=False)
+@click.pass_context
+def cli(ctx, debug):
+    # ensure that ctx.obj exists and is a dict (in case `cli()` is called
+    # by means other than the `if` block below)
+    ctx.ensure_object(dict)
+
+    ctx.obj['DEBUG'] = debug
+
+@cli.command()
+@click.pass_context
 @click.option('--namespace', default="default", help='The namespace for the release')
 @click.option('--chart', default="nginx", help='The name of the chart')
 @click.option('--app', required="true", help='The app name for the release')
@@ -29,8 +40,8 @@ def dict_merge(a, b, path=None):
 @click.option('--region', default="eu-west-2", help='The target region')
 @click.option('--envname', default="development", help='The target environment')
 @click.option('--colour', default="blue", help='The target colour')
-def main(namespace, chart, app, extrafiles, extravalues, destination, output, region, envname, colour):
-    """Build all possible s3 paths for values files"""
+def get_values(ctx, namespace, chart, app, extrafiles, extravalues, destination, output, region, envname, colour):
+    """Build all possible paths for values files"""
     if extrafiles == None:
         extrafiles = []
     else:
@@ -72,7 +83,5 @@ def main(namespace, chart, app, extrafiles, extravalues, destination, output, re
             helm_args = helm_args + ' --values ' + file
         print(helm_args)
 
-
-
 if __name__ == '__main__':
-    main()
+    cli()

@@ -36,6 +36,6 @@ setup(
     ],
     python_requires=">=3.6",
     entry_points={
-        "console_scripts": ["croudtech-helm-helper=croudtech_helm_helper.cli:main"],
+        "console_scripts": ["croudtech-helm-helper=croudtech_helm_helper.cli:cli"],
     },
 )
