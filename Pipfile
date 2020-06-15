@@ -4,12 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+black = "==19.10b0"
 
 [packages]
 boto3 = "*"
 click = "*"
 setuptools = "*"
 ruamel-yaml = "*"
+docker = "*"
+docker-registry-client = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
