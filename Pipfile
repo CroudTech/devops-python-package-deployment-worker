@@ -13,6 +13,7 @@ setuptools = "*"
 ruamel-yaml = "*"
 docker = "*"
 docker-registry-client = "*"
+semver = "*"
 
 [requires]
 python_version = "3.8"
