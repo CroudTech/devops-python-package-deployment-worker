@@ -1,3 +1,3 @@
 [console_scripts]
-croudtech-helm-helper = croudtech_helm_helper.cli:main
+croudtech-helm-helper = croudtech_helm_helper.cli:cli
 
