@@ -8,8 +8,8 @@ print(find_packages())
 
 setup(
     install_requires=[
-        "boto3==1.14.2",
-        "botocore==1.17.2",
+        "boto3==1.14.3",
+        "botocore==1.17.3",
         "certifi==2020.4.5.2",
         "chardet==3.0.4",
         "click==7.1.2",
@@ -25,6 +25,7 @@ setup(
         "ruamel-yaml==0.16.10",
         "ruamel.yaml.clib==0.2.0; python_version < '3.9' and platform_python_implementation == 'CPython'",
         "s3transfer==0.3.3",
+        "semver==2.10.2",
         "six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
         "urllib3==1.25.9; python_version != '3.4'",
         "websocket-client==0.57.0",
