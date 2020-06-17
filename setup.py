@@ -38,7 +38,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/CroudTech/devops-python-package-deployment-worker",
-    packages=["croudtech_helm_helper"],
+    packages=["croudtech_helm_helper", "croudtech_helm_helper.docker_tools"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
