@@ -134,11 +134,13 @@ def setup_image_tag(ctx):
 @click.option("--tag", help="The git tag name")
 @click.option("--build", help="The build number")
 @click.option("--output", help="The output type", default="json")
-@click.option("--tag-master/--no-tag-master", help="Tag master with stable when no tags are specified", is_flag=True)
-def generate_docker_tags(ctx, branch, tag, output, build, tag_master):
+@click.option("--tag-main/--no-tag-main", help="Tag main with stable when no tags are specified", is_flag=True)
+@click.option("--single/--multiple", help="Generate single or multiple tags", is_flag=True)
+@click.option("--main-branch-name", help="The name of the primary branch", default="main")
+def generate_docker_tags(ctx, branch, tag, output, build, tag_main, single, main_branch_name):
     """Generate list of docker tags for a git branch / ref / commit"""
-    tag_manager = Tags(branch=branch, tag=tag, build=build, tag_master=tag_master)
-    print(tag_manager.get_formatted_tags(format=output))
+    tag_manager = Tags(branch=branch, tag=tag, build=build, tag_main=tag_main, main_branch_name=main_branch_name)
+    print(tag_manager.get_formatted_tags(format=output, single=single))
 
 
 if __name__ == "__main__":
