@@ -42,7 +42,7 @@ def cli(ctx, debug):
 @click.option("--extrafiles", help="Extra file names to search for")
 @click.option("--extravalues", help="Full paths to extra values files")
 @click.option(
-    "--destination", default="/tmp", help="The destination for downloaded values files"
+    "--destination", default=getcwd() + "/tmp/helm-values", help="The destination for downloaded values files"
 )
 @click.option(
     "--output",
