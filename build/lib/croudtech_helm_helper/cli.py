@@ -99,7 +99,7 @@ def get_values(
             with open(file) as fp:
                 data = yaml.load(fp)
                 combined = dict_merge(combined, data)
-        filename = destination + "/combined-%s-%s.yaml" % (namespace, app)
+        filename = destination + os.path.sep + "combined-%s-%s.yaml" % (namespace, app)
         fout = open(filename, "w+")
         yaml.dump(combined, fout)
         fout.close()

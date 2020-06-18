@@ -42,9 +42,9 @@ class GitValues:
         for extra_values_file in self.extra_values:
             required_files.append(extra_values_file.strip("/"))
 
-        download_path = "/tmp/downloaded_values/{colour}-{envname}-helm-values".format(
+        download_path = "tmp/downloaded_values/{colour}-{envname}-helm-values".format(
             colour=self.colour, envname=self.envname
-        )
+        ).replace("/", os.path.sep)
         try:
             rmtree(download_path)
         except:
@@ -59,11 +59,11 @@ class GitValues:
 
         for required_file in required_files:
             if required_file in fileList:
-                destination = dest + "/" + required_file
+                destination = dest + os.path.sep + required_file
                 destination_folder = os.path.dirname(destination)
                 if os.path.exists(destination_folder) == False:
                     os.makedirs(destination_folder)
-                copyfile(download_path + "/" + required_file, destination)
+                copyfile(download_path + os.path.sep + required_file, destination)
 
                 downloaded.append(destination)
 
@@ -77,7 +77,7 @@ class GitValues:
         ]
         files = []
         for result in results:
-            files.append(result.replace(download_path + "/", ""))
+            files.append(result.replace(download_path + os.path.sep, ""))
 
         return files
 
@@ -87,18 +87,18 @@ class GitValues:
         level = 0
         for index, path_part in enumerate(path_parts):
             level += 1
-            path = root + "/" + path_part
-            path = path.strip("/")
+            path = root + os.path.sep + path_part
+            path = path.strip(os.path.sep)
             if level > 0:
-                paths.append(path + "/common.yaml")
+                paths.append(path + os.path.sep + "common.yaml")
             if level > 1 and level < self.namespace_size:
-                paths.append(path + "/_" + self.chart + "/common.yaml")
+                paths.append(path + os.path.sep + "_" + self.chart + os.path.sep + "common.yaml")
 
             if level > self.namespace_size:
                 for extra_file in self.extra_files:
                     extra_file = os.path.splitext(extra_file)[0]
-                    paths.append(path + "/" + extra_file + ".yaml")
-                paths.append(path + "/" + self.app + ".yaml")
+                    paths.append(path + os.path.sep + extra_file + ".yaml")
+                paths.append(path + os.path.sep + self.app + ".yaml")
 
             root = path
 
