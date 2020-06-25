@@ -91,8 +91,10 @@ class GitValues:
             path = path.strip(os.path.sep)
             if level > 0:
                 paths.append(path + os.path.sep + "common.yaml")
+                paths.append(path + os.path.sep + "_system.yaml")
             if level > 1 and level < self.namespace_size:
                 paths.append(path + os.path.sep + "_" + self.chart + os.path.sep + "common.yaml")
+                paths.append(path + os.path.sep + "_" + self.chart + os.path.sep + "_system.yaml")
 
             if level > self.namespace_size:
                 for extra_file in self.extra_files:
