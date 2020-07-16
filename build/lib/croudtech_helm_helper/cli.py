@@ -98,7 +98,7 @@ def get_values(
             click.echo("Adding " + file)
             with open(file) as fp:
                 data = yaml.load(fp)
-                combined = dict_merge(combined, data)
+                combined = dict_merge(dict(data), dict(combined))
         filename = destination + os.path.sep + "combined-%s-%s.yaml" % (namespace, app)
         fout = open(filename, "w+")
         yaml.dump(combined, fout)
