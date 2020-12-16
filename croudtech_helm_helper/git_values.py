@@ -8,6 +8,7 @@ from shutil import rmtree
 from shutil import copyfile
 import boto3
 from botocore.exceptions import ClientError
+import click
 
 class GitValues:
     def __init__(
@@ -108,10 +109,12 @@ class GitValues:
     @property
     def clone_url(self):
         if self.repository_source == 'github':
+            click.echo(click.style('Using GitHub', fg="green", bold=True))
             return "https://{github_pat}@github.com/CroudTech/{colour}-{envname}-helm-values.git".format(
                 colour=self.colour, envname=self.envname, region=self.region, github_pat=self.github_pat
             )
         else:
+            click.echo(click.style('Using CodeCommit', fg="green", bold=True))
             return "https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/{colour}-{envname}-helm-values".format(
                 colour=self.colour, envname=self.envname, region=self.region
             )
