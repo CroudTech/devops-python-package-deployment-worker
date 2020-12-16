@@ -6,7 +6,8 @@ import subprocess
 from glob import glob
 from shutil import rmtree
 from shutil import copyfile
-
+import boto3
+from botocore.exceptions import ClientError
 
 class GitValues:
     def __init__(
@@ -19,6 +20,7 @@ class GitValues:
         region,
         extra_files=[],
         extra_values=[],
+        ssm_prefix="/devops/pipeline/"
     ):
         self.namespace = namespace
         self.chart = chart.split("/").pop()
@@ -29,6 +31,7 @@ class GitValues:
         self.region = region
         self.colour = colour
         self.envname = envname
+        self.ssm_prefix = ssm_prefix
 
     def download_values(self, dest):
         downloaded = []
@@ -50,10 +53,8 @@ class GitValues:
         except:
             pass
         os.makedirs(download_path)
-        clone_url = "https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/{colour}-{envname}-helm-values".format(
-            colour=self.colour, envname=self.envname, region=self.region
-        )
-        subprocess.check_output(["git", "clone", clone_url, download_path])
+
+        subprocess.check_output(["git", "clone", self.clone_url, download_path])
 
         fileList = self.get_files_as_list(download_path)
 
@@ -68,6 +69,52 @@ class GitValues:
                 downloaded.append(destination)
 
         return downloaded
+
+    @property
+    def ssm_client(self):
+        if not hasattr(self, '_ssm_client'):
+            self._ssm_client = boto3.client('ssm')
+
+        return self._ssm_client
+
+    def get_ssm_value(self, key, default=None, with_decryption=False):
+        attr_name = "_%s" % key
+
+        if not hasattr(self, attr_name):
+            try:
+                ssm_path = self.ssm_prefix + key
+                print(ssm_path)
+
+                response = self.ssm_client.get_parameter(
+                    Name=ssm_path,
+                    WithDecryption=with_decryption
+                )
+                setattr(self, attr_name, response['Parameter']['Value'])
+            except ClientError as e:
+                if e.__class__.__name__ == 'ParameterNotFound':
+                    return default
+                raise e
+
+        return getattr(self, attr_name)
+
+    @property
+    def repository_source(self):
+        return self.get_ssm_value('repository_source', 'codecommit')
+
+    @property
+    def github_pat(self):
+        return self.get_ssm_value('github_pat', with_decryption=True)
+
+    @property
+    def clone_url(self):
+        if self.repository_source == 'github':
+            return "https://{github_pat}@github.com/CroudTech/{colour}-{envname}-helm-values.git".format(
+                colour=self.colour, envname=self.envname, region=self.region, github_pat=self.github_pat
+            )
+        else:
+            return "https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/{colour}-{envname}-helm-values".format(
+                colour=self.colour, envname=self.envname, region=self.region
+            )
 
     def get_files_as_list(self, download_path):
         results = [
