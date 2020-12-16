@@ -54,7 +54,7 @@ class GitValues:
             pass
         os.makedirs(download_path)
 
-        subprocess.check_output(["git", "clone", self.clone_url, download_path])
+        subprocess.check_output(["git", "clone", "--depth=1", self.clone_url, download_path])
 
         fileList = self.get_files_as_list(download_path)
 
