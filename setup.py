@@ -27,7 +27,7 @@ setup(
         "s3transfer==0.3.3",
         "semver==2.10.2",
         "six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-        "urllib3==1.25.9; python_version != '3.4'",
+        "urllib3==1.26.5; python_version != '3.4'",
         "websocket-client==0.57.0",
     ],
     name="croudtech-helm-helper",  # Replace with your own username
