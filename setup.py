@@ -10,7 +10,7 @@ setup(
     install_requires=[
         "boto3==1.14.3",
         "botocore==1.17.3",
-        "certifi==2020.4.5.2",
+        "certifi==2022.12.7",
         "chardet==3.0.4",
         "click==7.1.2",
         "docker==4.2.1",
